@@ -17,6 +17,7 @@ interface UserListProps {
   onUpdate: (id: number) => void;
   onDelete: (id: number) => void;
   onCancel: () => void;
+  hasActiveFilters: boolean;
 }
 
 
@@ -31,15 +32,27 @@ export default function UserList({
   onUpdate,
   onDelete,
   onCancel,
+  hasActiveFilters,
   }: UserListProps) {
 
   return (
 
-    <div>
+    <section className="user-list-section">
 
-      <h2 className="section-title">
-        All Users
-      </h2>
+      {users.length === 0 ? (
+
+        <div className="empty-state">
+          <h3>
+            {hasActiveFilters ? "No matching users found" : "No users yet"}
+          </h3>
+          <p>
+            {hasActiveFilters
+              ? "Try a different keyword or switch the filter back to all fields."
+              : "Add the first user to start building the directory."}
+          </p>
+        </div>
+
+      ) : null}
 
       <div className="users-list">
 
@@ -63,6 +76,6 @@ export default function UserList({
 
       </div>
 
-    </div>
+    </section>
   );
 }

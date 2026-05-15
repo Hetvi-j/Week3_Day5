@@ -2,7 +2,7 @@
 
 // import "./page.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import AddUserForm from "./components/AddUserForm";
 import UserList from "./components/UserList";
@@ -30,6 +30,7 @@ interface UserInput {
 export default function UsersPage() {
 
   const [users, setUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [editingId, setEditingId] = useState< number | null >(null);
 
@@ -47,6 +48,24 @@ export default function UsersPage() {
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   const [alertMessage, setAlertMessage] = useState<string>("");
+
+  const filteredUsers = useMemo(() => {
+
+    const query = searchTerm.trim().toLowerCase();
+
+    if (!query) {
+
+      return users;
+    }
+
+    return users.filter((user) => {
+
+      const nameMatch = user.name.toLowerCase().includes(query);
+      const emailMatch = user.email.toLowerCase().includes(query);
+
+      return nameMatch || emailMatch;
+    });
+  }, [searchTerm, users]);
 
 
   // Show Alert Helper
@@ -72,7 +91,26 @@ export default function UsersPage() {
   // Load Users
   useEffect(() => {
 
-    fetchUsers();
+    let isMounted = true;
+
+    async function loadUsers(): Promise<void> {
+
+      const response = await fetch("/api/users");
+
+      const data: User[] = await response.json();
+
+      if (isMounted) {
+
+        setUsers(data);
+      }
+    }
+
+    void loadUsers();
+
+    return () => {
+
+      isMounted = false;
+    };
 
   }, []);
 
@@ -156,8 +194,8 @@ export default function UsersPage() {
     // Check duplicate email
     const userExists: boolean = checkDuplicateUser(
       users,
-      editEmail//,
-      // id
+      editEmail,
+      id
     );
 
     if (userExists) {
@@ -225,26 +263,91 @@ export default function UsersPage() {
 
     <div className="page-container">
 
-      <div className="main-card">
+      <header className="page-header">
+        <div>
+          <p className="page-kicker">Add, delete, update, see all users</p>
+          <h1 className="page-title">User Management Dashboard</h1>
+          
+        </div>
 
-        <AddUserForm
-          onAddUser={handleAddUser}
-        />
+        <div className="page-badges">
+          <div className="badge-card">
+            <span>Total users</span>
+            <strong>{users.length}</strong>
+          </div>
+          <div className="badge-card">
+            <span>Visible users</span>
+            <strong>{filteredUsers.length}</strong>
+          </div>
+        </div>
+      </header>
 
-        <hr />
+      <div className="workspace-grid">
 
-        <UserList
-          users={users}
-          editingId={editingId}
-          editName={editName}
-          editEmail={editEmail}
-          setEditName={setEditName}
-          setEditEmail={setEditEmail}
-          onEdit={handleEdit}
-          onUpdate={handleUpdate}
-          onDelete={handleDeleteClick}
-          onCancel={() => setEditingId(null)}
-        />
+        <section className="workspace-panel control-panel">
+          <div className="toolbar-card">
+            <div className="toolbar-head">
+              <div>
+                <h2 className="toolbar-title">Find users faster</h2>
+              </div>
+              <button
+                type="button"
+                className="ghost-btn"
+                onClick={() => {
+                  setSearchTerm("");
+                }}
+              >
+                Clear filters
+              </button>
+            </div>
+
+            <label className="field-group">
+              <span>Search</span>
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name or email"
+                className="input-field"
+              />
+            </label>
+
+            <p className="toolbar-note">
+              {searchTerm.trim()
+                ? `Showing ${filteredUsers.length} result${filteredUsers.length === 1 ? "" : "s"} for "${searchTerm.trim()}".`
+                : "Use the search box or filter to narrow the user list."}
+            </p>
+          </div>
+
+          <AddUserForm
+            onAddUser={handleAddUser}
+          />
+        </section>
+
+        <section className="workspace-panel users-panel">
+          <div className="users-panel-head">
+            <div>
+              <h2 className="toolbar-title">All Users</h2>
+            </div>
+           
+          </div>
+
+          <div className="users-panel-body">
+            <UserList
+              users={filteredUsers}
+              editingId={editingId}
+              editName={editName}
+              editEmail={editEmail}
+              setEditName={setEditName}
+              setEditEmail={setEditEmail}
+              onEdit={handleEdit}
+              onUpdate={handleUpdate}
+              onDelete={handleDeleteClick}
+              onCancel={() => setEditingId(null)}
+              hasActiveFilters={Boolean(searchTerm.trim())}
+            />
+          </div>
+        </section>
 
       </div>
 

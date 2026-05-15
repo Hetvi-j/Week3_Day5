@@ -19,7 +19,7 @@ export default function EditUserForm({
 
   return (
 
-    <div>
+    <div className="edit-form">
 
       <input
         type="text"
@@ -28,16 +28,12 @@ export default function EditUserForm({
         className="input-field"
       />
 
-      <br /><br />
-
       <input
         type="email"
         value={editEmail}
         onChange={(e) => setEditEmail(e.target.value)}
         className="input-field"
       />
-
-      <br /><br />
 
       <div className="button-group">
 

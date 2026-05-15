@@ -47,9 +47,15 @@ export default function AddUserForm({ onAddUser }:AddUserFormProps) {
       className="form-container"
     >
 
-      <h2 className="section-title" >
-        USER MANAGEMENT
-      </h2>
+      <div className="form-head">
+        <div>
+          <p className="toolbar-kicker">Create user</p>
+          <h2 className="section-title">User Management</h2>
+        </div>
+        <p className="form-note">
+          Add a new user and it will appear in the directory instantly.
+        </p>
+      </div>
 
       <div className="input-grid">
 

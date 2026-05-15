@@ -48,6 +48,31 @@ export async function PUT(req:NextRequest , context:Context) : Promise<NextRespo
     });
 }
 
+// Delete User
+export async function DELETE(
+    req: NextRequest,
+    context: Context
+): Promise<NextResponse> {
+
+    const params = await context.params;
+
+    const data: string = fs.readFileSync(filePath, "utf-8");
+    const users: User[] = JSON.parse(data);
+
+    const filteredUsers: User[] = users.filter(
+        (user: User) => user.id !== Number(params.id)
+    );
+
+    fs.writeFileSync(
+        filePath,
+        JSON.stringify(filteredUsers, null, 2)
+    );
+
+    return NextResponse.json({
+        message: "User deleted successfully",
+    });
+}
+
 
 
 

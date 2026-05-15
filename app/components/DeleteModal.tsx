@@ -1,5 +1,5 @@
 interface DeleteInterface{
-  isOpen:Boolean;
+  isOpen:boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
