@@ -265,20 +265,8 @@ export default function UsersPage() {
 
       <header className="page-header">
         <div>
-          <p className="page-kicker">Add, delete, update, see all users</p>
-          <h1 className="page-title">User Management Dashboard</h1>
-          
-        </div>
 
-        <div className="page-badges">
-          <div className="badge-card">
-            <span>Total users</span>
-            <strong>{users.length}</strong>
-          </div>
-          <div className="badge-card">
-            <span>Visible users</span>
-            <strong>{filteredUsers.length}</strong>
-          </div>
+          <h1 className="page-title">User Management Dashboard</h1>
         </div>
       </header>
 

@@ -25,13 +25,60 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.app-shell {
+  min-height: 100vh;
+}
+
+.navbar {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 20px 28px 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-end;
+  font-size: 40px;
+  color: white;
+}
+
+.navbar-brand {
+  display: grid;
+  gap: 6px;
+}
+
+.navbar-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 800;
+  color: #0f766e;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.navbar-copy {
+  margin: 0;
+  max-width: 44ch;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: right;
+}
+
 .page-container {
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
     radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 24%),
     #f3f4f6;
-  padding: 24px;
+  padding: 0 24px 24px;
 }
 
 .page-header {
@@ -67,33 +114,6 @@ body {
   line-height: 1.6;
 }
 
-.page-badges {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.badge-card {
-  min-width: 150px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 16px 18px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.badge-card span {
-  display: block;
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 10px;
-}
-
-.badge-card strong {
-  font-size: 28px;
-  color: #111827;
-}
-
 .workspace-grid {
   max-width: 1240px;
   margin: 0 auto;
@@ -117,9 +137,10 @@ body {
 }
 
 .users-panel {
-  min-height: calc(100vh - 180px);
+  height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .users-panel-head {
@@ -140,6 +161,7 @@ body {
 
 .users-panel-body {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 6px;
 }
@@ -213,7 +235,7 @@ body {
 }
 
 .toolbar-title {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 800;
   color: #0f172a;
 }
@@ -502,6 +524,16 @@ body {
 }
 
 @media (max-width: 1024px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 16px 14px;
+  }
+
+  .navbar-copy {
+    text-align: left;
+  }
+
   .page-header,
   .workspace-grid {
     grid-template-columns: 1fr;
@@ -517,22 +549,17 @@ body {
   }
 
   .users-panel {
-    min-height: auto;
+    height: auto;
   }
 }
 
 @media (max-width: 720px) {
+  .navbar {
+    padding: 16px 12px 12px;
+  }
+
   .page-container {
     padding: 16px;
-  }
-
-  .page-badges {
-    width: 100%;
-  }
-
-  .badge-card {
-    flex: 1 1 0;
-    min-width: 0;
   }
 
   .workspace-panel {
